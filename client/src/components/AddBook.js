@@ -6,7 +6,7 @@ import { getAuthorsQuery, addBookMutation } from '../queries/queries';
 
 const AddBook = () => {
   const { loading, data } = useQuery(getAuthorsQuery);
-  const [addTodo, addBookResponse] = useMutation(addBookMutation);
+  const [addTodo] = useMutation(addBookMutation);
 
   const [name, setName] = useState('');
   const [genre, setGenre] = useState('');
@@ -16,16 +16,28 @@ const AddBook = () => {
     if (loading) {
       return <option disabled>loading...</option>
     } else {
-    return data.authors.map(author => <option key={author.id} value={author.name}>{author.name}</option>)
+      return data.authors.map(author => <option key={author.id} value={author.name}>{author.name}</option>)
     }
   }
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if(!name.trim()){
+      alert('Please enter name!');
+      return;
+    }
+    if(!genre.trim()){
+      alert('Please enter genre!');
+      return;
+    }
+    if(!authorId.trim()){
+      alert('Please select author!');
+      return;
+    }
+    
     try {
       const res = await addTodo({ variables: { name, genre, authorId } })
       console.log(res.data, 'res.data');
-      console.log(addBookResponse, 'addBookResponse');
     } catch (error) {
       console.log(error);
     }
