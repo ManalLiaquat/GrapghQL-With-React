@@ -34,7 +34,7 @@ code {
   padding: 0;
 }
 
-#book-> li{
+#book-list > li{
   display: inline-block;
   margin: 12px;
   padding: 10px;
