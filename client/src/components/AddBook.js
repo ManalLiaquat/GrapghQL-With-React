@@ -4,7 +4,7 @@ import { getAuthorsQuery, addBookMutation, getBooksQuery } from '../queries/quer
 
 const AddBook = () => {
   const { loading, data } = useQuery(getAuthorsQuery);
-  const [addTodo] = useMutation(addBookMutation);
+  const [addBook] = useMutation(addBookMutation);
 
   const [name, setName] = useState('');
   const [genre, setGenre] = useState('');
@@ -14,7 +14,7 @@ const AddBook = () => {
     if (loading) {
       return <option disabled>loading...</option>
     } else {
-      return data.authors.map(author => <option key={author.id} value={author.name}>{author.name}</option>)
+      return data.authors.map(author => <option key={author.id} value={author.id}>{author.name}</option>)
     }
   }
 
@@ -34,7 +34,7 @@ const AddBook = () => {
     }
 
     try {
-      const res = await addTodo({ variables: { name, genre, authorId }, refetchQueries: [{ query: getBooksQuery }] });
+      const res = await addBook({ variables: { name, genre, authorId }, refetchQueries: [{ query: getBooksQuery }] });
       console.log(res.data, 'res.data');
       console.log(res.errors, 'res.errors');
 
