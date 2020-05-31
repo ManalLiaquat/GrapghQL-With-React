@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 // queries
-import { getAuthorsQuery, addBookMutation } from '../queries/queries';
+import { getAuthorsQuery, addBookMutation, getBooksQuery } from '../queries/queries';
 
 const AddBook = () => {
   const { loading, data } = useQuery(getAuthorsQuery);
@@ -22,22 +22,24 @@ const AddBook = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if(!name.trim()){
+    if (!name.trim()) {
       alert('Please enter name!');
       return;
     }
-    if(!genre.trim()){
+    if (!genre.trim()) {
       alert('Please enter genre!');
       return;
     }
-    if(!authorId.trim()){
+    if (!authorId.trim()) {
       alert('Please select author!');
       return;
     }
-    
+
     try {
-      const res = await addTodo({ variables: { name, genre, authorId } })
+      const res = await addTodo({ variables: { name, genre, authorId }, refetchQueries: [{ query: getBooksQuery }] });
       console.log(res.data, 'res.data');
+      console.log(res.errors, 'res.errors');
+
     } catch (error) {
       console.log(error);
     }
