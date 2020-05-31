@@ -4,6 +4,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { client } from './config/graphql';
 // components
 import BookList from './components/BookList';
+import AddBook from './components/AddBook';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <div id="main">
         <h1>My Reading List</h1>
         <BookList />
+        <AddBook />
       </div>
     </ApolloProvider>
   );
