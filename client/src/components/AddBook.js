@@ -1,37 +1,53 @@
-import React from 'react'
-import { useQuery } from '@apollo/react-hooks';
+import React, { useState } from 'react'
+import { useQuery, useMutation } from '@apollo/react-hooks';
 
 // queries
-import { getAuthorsQuery } from '../queries/queries';
+import { getAuthorsQuery, addBookMutation } from '../queries/queries';
 
 const AddBook = () => {
-  const { loading, error, data } = useQuery(getAuthorsQuery);
-  // console.log(loading, error, data, 'data');
+  const { loading, data } = useQuery(getAuthorsQuery);
+  const [addTodo, addBookResponse] = useMutation(addBookMutation);
+
+  const [name, setName] = useState('');
+  const [genre, setGenre] = useState('');
+  const [authorId, setAuthorId] = useState('');
 
   const displayAuthors = () => {
     if (loading) {
       return <option disabled>loading...</option>
     } else {
-      return data.authors.map(author => <option key={author.id} value={author.name}>{author.name}</option>)
+    return data.authors.map(author => <option key={author.id} value={author.name}>{author.name}</option>)
     }
   }
 
+  const handleSubmit = async e => {
+    e.preventDefault();
+    try {
+      const res = await addTodo({ variables: { name, genre, authorId } })
+      console.log(res.data, 'res.data');
+      console.log(addBookResponse, 'addBookResponse');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
   return (
-    <form id="add-book">
+    <form id="add-book" onSubmit={handleSubmit}>
 
       <div className="field">
         <label>Book name:</label>
-        <input type="text" />
+        <input type="text" value={name} onChange={e => setName(e.target.value)} />
       </div>
 
       <div className="field">
         <label>Genre:</label>
-        <input type="text" />
+        <input type="text" onChange={e => setGenre(e.target.value)} />
       </div>
 
       <div className="field">
         <label>Author:</label>
-        <select name="author">
+        <select onChange={e => setAuthorId(e.target.value)}>
           <option value="">Select author</option>
           {displayAuthors()}
         </select>

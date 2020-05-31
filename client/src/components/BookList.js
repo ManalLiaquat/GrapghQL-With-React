@@ -12,7 +12,7 @@ const BookList = () => {
     if (loading) {
       return <div>Loading...</div>
     } else {
-      return data.books.map(book => <li key={book.id}>{book.name}</li>)
+    return data.books.map(book => <li key={book.id}>{book.name} - {book.genre}</li>)
     }
   }
 
